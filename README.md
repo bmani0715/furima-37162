@@ -49,11 +49,11 @@ has_many:orders
 | user                  | reference  | null: false,foreign_key: true  |
 | product_name          | string     | null: false                    |
 | description           | text       | null: false                    |
-| category              | integer    | null: false                    |
-| product_condition     | integer    | null: false                    |
-| delivery_fee          | integer    | null: false                    |
-| prefecture            | integer    | null: false                    |
-| days_to_ship          | integer    | null: false                    |
+| category_id           | integer    | null: false                    |
+| product_condition_id  | integer    | null: false                    |
+| delivery_fee_id       | integer    | null: false                    |
+| prefecture_id         | integer    | null: false                    |
+| days_to_ship_id       | integer    | null: false                    |
 | price                 | integer    | null: false                    |
 
 ### Association
@@ -77,12 +77,12 @@ has_one:address
 | Column                | Type       | Options                        |
 | ------------------    | ------     | -----------                    |
 | postal_code           | string     | null: false                    |
-| prefecture            | integer    | null: false                    |
+| prefecture_id         | integer    | null: false                    |
 | municipalities        | string     | null: false                    |
 | block_number          | string     | null: false                    |
 | building_name         | string     |                                |
 | phone_number          | string     | null: false                    |
-| orders                | string     | null: false,foreign_key: true  |
+| order                 | string     | null: false,foreign_key: true  |
 
 ### Association
 belongs_to:order
