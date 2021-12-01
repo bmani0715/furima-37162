@@ -23,6 +23,12 @@ class ItemsController < ApplicationController
   def show
   end
 
+  def edit
+    unless user_signed_in? && current_user.id == @item.user_id
+      redirect_to root_path
+    end
+  end
+
   private
 
   def set_item
