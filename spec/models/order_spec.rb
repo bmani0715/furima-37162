@@ -5,7 +5,7 @@ RSpec.describe ItemOrder, type: :model do
     user = FactoryBot.create(:user)
     item = FactoryBot.create(:item)
     @item_order = FactoryBot.build(:item_order,user_id: user.id,item_id:item.id)
-    sleep(4)
+    sleep(1)
   end
 
   context '配送先情報の保存ができるとき' do
@@ -71,6 +71,11 @@ RSpec.describe ItemOrder, type: :model do
       @item_order.prefecture_id = nil
       @item_order.valid?
       expect(@item_order.errors.full_messages).to include("Prefecture can't be blank")
+    end
+    it 'prefecture_idに「--」が選択されている場合は購入できない' do
+      @item_order.prefecture_id = 1
+      @item_order.valid?
+      expect(@item_order.errors.full_messages).to include("Prefecture Select")
     end
     it 'municipalitiesが空だと購入できない' do
       @item_order.municipalities = ""

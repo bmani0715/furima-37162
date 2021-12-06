@@ -62,7 +62,6 @@ class ItemsController < ApplicationController
   end
 
   def order_item
-     @item.order.id
      if @item.order != nil
      redirect_to root_path
      end
