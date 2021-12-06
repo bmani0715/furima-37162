@@ -89,10 +89,22 @@ RSpec.describe ItemOrder, type: :model do
       @item_order.valid?
       expect(@item_order.errors.full_messages).to include("Phone number is invalid")
     end
+<<<<<<< Updated upstream
     it 'トークンが空だと保存できないこと' do
+=======
+  
+    it "tokenが空では登録できないこと" do
+>>>>>>> Stashed changes
       @item_order.token = nil
       @item_order.valid?
       expect(@item_order.errors.full_messages).to include("Token can't be blank")
     end
+<<<<<<< Updated upstream
+=======
+  
+  
+  
+  
+>>>>>>> Stashed changes
   end
 end
