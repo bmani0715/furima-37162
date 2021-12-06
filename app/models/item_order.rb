@@ -10,7 +10,7 @@ class ItemOrder
     validates :municipalities
     validates :block_number
     validates :phone_number, format: { with: /\A\d{10,11}\z/, message: "is invalid" },numericality: { only_integer: true, message: 'Input Only Number'}
-    #validates :token
+    validates :token
   end
 
     def save

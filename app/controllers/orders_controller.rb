@@ -14,6 +14,7 @@ class OrdersController < ApplicationController
     def create
       @item_order = ItemOrder.new(order_params)
       if @item_order.valid?
+        pay_item
         @item_order.save
         return redirect_to root_path
       else
@@ -30,5 +31,15 @@ class OrdersController < ApplicationController
       def order_params
         params.require(:item_order).permit(:postal_code, :prefecture_id, :municipalities, :block_number, :building_name, :phone_number).merge(token: params[:token], item_id: params[:item_id], user_id: current_user.id )
       end
+
+      def pay_item
+        Payjp.api_key = ENV["PAYJP_SECRET_KEY"]
+          Payjp::Charge.create(
+            amount: @item.price,
+            #amount: order_params[:item_price],  
+            card: order_params[:token],    
+            currency: 'jpy'                 
+          )
+        end
 
   end
