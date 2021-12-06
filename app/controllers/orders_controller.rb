@@ -35,12 +35,7 @@ class OrdersController < ApplicationController
       def pay_item
         Payjp.api_key = ENV["PAYJP_SECRET_KEY"]
           Payjp::Charge.create(
-<<<<<<< Updated upstream
-            amount: @item.price,
-            #amount: order_params[:item_price],  
-=======
             amount: @item.price,  
->>>>>>> Stashed changes
             card: order_params[:token],    
             currency: 'jpy'                 
           )
