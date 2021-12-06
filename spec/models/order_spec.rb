@@ -2,7 +2,10 @@ require 'rails_helper'
 
 RSpec.describe ItemOrder, type: :model do
   before do
-    @item_order = FactoryBot.build(:item_order)
+    user = FactoryBot.create(:user)
+    item = FactoryBot.create(:item)
+    @item_order = FactoryBot.build(:item_order,user_id: user.id,item_id:item.id)
+    sleep(4)
   end
 
   context '配送先情報の保存ができるとき' do
@@ -47,7 +50,7 @@ RSpec.describe ItemOrder, type: :model do
     it '郵便番号が空だと購入ができない' do
       @item_order.postal_code = ""
       @item_order.valid?
-      expect(@item_order.errors.full_messages).to include("Postal code can't be blank","Postal code Input correctly")
+      expect(@item_order.errors.full_messages).to include("Postal code can't be blank")
     end
     it '郵便番号にハイフンがないと登録できない' do
       @item_order.postal_code = "12345678"
@@ -56,6 +59,11 @@ RSpec.describe ItemOrder, type: :model do
     end
     it '郵便番号が8桁でないと購入できない' do
       @item_order.postal_code = "1234567"
+      @item_order.valid?
+      expect(@item_order.errors.full_messages).to include("Postal code Input correctly")
+    end
+    it '郵便番号が半角数値でないと購入できない' do
+      @item_order.postal_code = "１２３−４５６７"
       @item_order.valid?
       expect(@item_order.errors.full_messages).to include("Postal code Input correctly")
     end
@@ -77,34 +85,37 @@ RSpec.describe ItemOrder, type: :model do
     it 'phone_numberが空だと購入できない' do
       @item_order.phone_number = ""
       @item_order.valid?
-      expect(@item_order.errors.full_messages).to include("Phone number can't be blank", "Phone number is invalid")
+      expect(@item_order.errors.full_messages).to include("Phone number can't be blank")
     end
-    it 'phone_numberが10桁以上11桁以内の数値のみでなければ購入できない' do
-      @item_order.phone_number = "080123456789"
-      @item_order.valid?
-      expect(@item_order.errors.full_messages).to include("Phone number is invalid")
-    end
-    it 'phone_numberが10桁以上11桁以内の半角数値のみでなければ購入できない' do
+    it 'phone_numberが半角数値のみでなければ購入できない' do
       @item_order.phone_number = "０８０１２３４５６７８９"
       @item_order.valid?
       expect(@item_order.errors.full_messages).to include("Phone number is invalid")
     end
-<<<<<<< Updated upstream
-    it 'トークンが空だと保存できないこと' do
-=======
-  
+    it 'phone_numberが10桁以上でなければ購入できない' do
+      @item_order.phone_number = "123456789"
+      @item_order.valid?
+      expect(@item_order.errors.full_messages).to include("Phone number is invalid")
+    end
+    it 'phone_numberが12桁未満でなければ購入できない' do
+      @item_order.phone_number = "123456789012"
+      @item_order.valid?
+      expect(@item_order.errors.full_messages).to include("Phone number is invalid")
+    end
     it "tokenが空では登録できないこと" do
->>>>>>> Stashed changes
       @item_order.token = nil
       @item_order.valid?
       expect(@item_order.errors.full_messages).to include("Token can't be blank")
     end
-<<<<<<< Updated upstream
-=======
-  
-  
-  
-  
->>>>>>> Stashed changes
+    it 'userが紐付いていなければ購入できない' do
+      @item_order.user_id = nil
+      @item_order.valid?
+      expect(@item_order.errors.full_messages).to include("User can't be blank")
+    end
+    it 'itemが紐付いていなければ購入できない' do
+      @item_order.item_id = nil
+      @item_order.valid?
+      expect(@item_order.errors.full_messages).to include("Item can't be blank")
+    end
   end
 end
